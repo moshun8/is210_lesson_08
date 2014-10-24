@@ -15,4 +15,4 @@ class Tigerpaw(task_02.Tire):
        Overrides the _Tire__maximum_tires from task 2
     """
 
-    _Tire__maximum_tires = 750
+    _Tigerpaw__maximum_tires = 750
