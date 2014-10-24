@@ -16,6 +16,5 @@ class Snapshot(object):
         created(timestamp): when something was made
     """
 
-    def __init__(self, created):
+    def __init__(self):
         self.created = time.time()
-        self.created = created
