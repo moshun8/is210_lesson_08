@@ -18,8 +18,9 @@ class Car(object):
     def __init__(self, color='red', tires=None):
         self.color = color
         self.tires = tires
-        if tires == None:
+        if tires is None:
             tires = [Tire(), Tire(), Tire(), Tire()]
+
 
 class Tire(object):
     """A round rubber thing.
@@ -29,9 +30,9 @@ class Tire(object):
 
     Attributes:
        miles (integer): The number of miles on the Tire.
-       _maximum_miles: class attribute, max = 500
+       _Tire__maximum_miles: class attribute, max = 500
     """
-    _maximum_miles = 500
+    _Tire__maximum_miles = 500
 
     def __init__(self, miles=0):
         self.miles = miles
