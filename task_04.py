@@ -10,9 +10,8 @@ class Tigerpaw(task_02.Tire):
     """The foot of a tiger.
 
     Args:
-        
+
     Attributes:
        Overrides the _Tire__maximum_tires from task 2
     """
-
-    _Tigerpaw__maximum_tires = 750
+    __maximum_miles = 750
