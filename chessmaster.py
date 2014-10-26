@@ -7,23 +7,28 @@ class ChessPiece(object):
     """The pieces on a chess board.
 
     Args:
-        position:
+        position (string): where the piece is or moving to
 
     Attributes:
-        position:
+        position (string): where the piece is or moving to
+
+    Functions:
+        
     """
     
     import time
 	
     prefix = ''
 	
-    def __init__(self, position, moves):
-		self.position = position
-		self.moves = []
+    def __init__(self, position):
+        self.moves = []
 
-        if self.is_legal_move(self, position) = False:
+        if self.is_legal_move(position) is False:
             excep = '`{}` is not a legal start position'
             raise ValueError(excep.format(position))
+        else:
+            self.position = position
+            print "prefix: " + self.prefix + " position: " + self.position
 
     def algebraic_to_numeric(self, tile):
         """Converts a string coordinate to a tuple.
@@ -33,11 +38,11 @@ class ChessPiece(object):
         """
         if len(tile) is not 2:
             return None
-        x = tile[0].lower
+        x = tile[0]
         y = int(tile[1])
         y -= 1
 
-        if x is not 'a' or 'b' or 'c' or 'd' or 'e' or 'f' or 'g' or 'h':
+        if x not in 'abcdefg':
             return None
         if 0 > y > 7:
             return None
@@ -74,16 +79,36 @@ class ChessPiece(object):
             position (string): String coordinates of the chess piece
         """
 
-        if algebraic_to_numeric(position) is None:
+        if self.algebraic_to_numeric(position) is None:
             return False
         else:
             return True
 
     def move(self, position):
+        """Makes a tuple with old position, new one, and time
+
+        Args:
+            position (string): String coordinates of the chess piece
+        """
         if self.is_legal_move(position):
-            oldposition = prefix.self.position
-            newposition = prefix.position
-            timestamp = time.Time()
-            self.moves = [(oldposition, newposition, timestamp);]
+            oldposition = self.position
+            self.position = position
+            timestamp = self.time.time()
+            the_tup = (oldposition, position, timestamp)
+            self.moves.append(the_tup)
+            return the_tup
         else:
             return False
+
+piece = ChessPiece('a1')
+print piece
+print piece.position
+print piece.moves
+print piece.algebraic_to_numeric('e7')
+print piece.algebraic_to_numeric('j9')
+print piece.move('j9')
+print piece.move('e7')
+print piece.position
+print piece.moves
+print piece.move('b2')
+print piece.moves
