@@ -104,7 +104,6 @@ class Rook(ChessPiece):
     def __init__(self, position):
         self.position = position
 
-
     def is_legal_move(self, position):
         '''Makes Rook moves straight
         Checking to see if the x or y coordinates are the same
@@ -122,18 +121,20 @@ class Rook(ChessPiece):
 class Bishop(ChessPiece):
     '''Makes a Bishop'''
     prefix = 'B'
+
     def __init__(self, position):
         self.position = position
+
     def is_legal_move(self, position):
         '''Makes Bishop move diagonally
         Checking to see if the x or y coordinates are the same
         Args: position'''
-        oldposition = self.algebraic_to_numeric(self.position)
-        newposition = self.algebraic_to_numeric(position)
+        oldpos = self.algebraic_to_numeric(self.position)
+        newpos = self.algebraic_to_numeric(position)
 
-        if oldposition[0] - newposition[0] == oldposition[1] - newposition[1]:
+        if oldpos[0] - newpos[0] == oldpos[1] - newpos[1]:
             return True
-        elif oldposition[0] - newposition[0] == -(oldposition[1] - newposition[1]):
+        elif oldpos[0] - newpos[0] == -(oldpos[1] - newpos[1]):
             return True
         else:
             return False
@@ -142,6 +143,7 @@ class Bishop(ChessPiece):
 class King(ChessPiece):
     '''Makes a King, subclass to ChessPiece'''
     prefix = 'K'
+
     def __init__(self, position):
         self.position = position
 
@@ -168,13 +170,14 @@ class ChessMatch(object):
     """
 
     def __init__(self, pieces=None):
-        if pieces == None:
+        if pieces is None:
             self.reset()
         else:
             self.pieces = pieces
             self.log = []
 
     def reset(self):
+        '''resets board to starting places'''
         self.log = []
         self.pieces = {
             'Ra1': Rook('a1'),
@@ -190,6 +193,7 @@ class ChessMatch(object):
         }
 
     def move(self, fullnot, dest):
+        '''moves piece to new position'''
         a_tup = self.pieces[fullnot].move(dest)
         if a_tup is False:
             return False
@@ -198,6 +202,6 @@ class ChessMatch(object):
             new_key = self.pieces[fullnot].prefix + dest
             self.pieces[new_fullnot] = self.pieces.pop(fullnot)
             return a_tup
-    
+
     def __len__(self):
         return len(self.log)
