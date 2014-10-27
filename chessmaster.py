@@ -13,13 +13,12 @@ class ChessPiece(object):
         position (string): where the piece is or moving to
 
     Functions:
-        
+
     """
-    
+
     import time
-	
     prefix = ''
-	
+
     def __init__(self, position):
         self.moves = []
 
@@ -38,39 +37,36 @@ class ChessPiece(object):
         """
         if len(tile) is not 2:
             return None
-        x = tile[0]
-        y = int(tile[1])
-        y -= 1
+        xvar = tile[0]
+        yvar = int(tile[1])
+        yvar -= 1
 
-        if x not in 'abcdefg':
-            return None
-        if 0 > y > 7:
+        if xvar not in 'abcdefgh':
             return None
 
-        if x == 'a':
-            x = 0
-            return (x, y);
-        if x == 'b':
-            x = 1
-            return (x, y);
-        if x == 'c':
-            x = 2
-            return (x, y);
-        if x == 'd':
-            x = 3
-            return (x, y);
-        if x == 'e':
-            x = 4
-            return (x, y);
-        if x == 'f':
-            x = 5
-            return (x, y);
-        if x == 'g':
-            x = 6
-            return (x, y);
-        if x == 'h':
-            x = 7
-            return (x, y);
+        if 0 > yvar < 7:
+            return None
+
+        if xvar == 'a':
+            xvar = 0
+        elif xvar == 'b':
+            xvar = 1
+        elif xvar == 'c':
+            xvar = 2
+        elif xvar == 'd':
+            xvar = 3
+        elif xvar == 'e':
+            xvar = 4
+        elif xvar == 'f':
+            xvar = 5
+        elif xvar == 'g':
+            xvar = 6
+        elif xvar == 'h':
+            xvar = 7
+        else:
+            return None
+
+        return (xvar, yvar)
 
     def is_legal_move(self, position):
         """Checks if a move is legal or not
@@ -100,15 +96,108 @@ class ChessPiece(object):
         else:
             return False
 
-piece = ChessPiece('a1')
-print piece
-print piece.position
-print piece.moves
-print piece.algebraic_to_numeric('e7')
-print piece.algebraic_to_numeric('j9')
-print piece.move('j9')
-print piece.move('e7')
-print piece.position
-print piece.moves
-print piece.move('b2')
-print piece.moves
+
+class Rook(ChessPiece):
+    '''Makes a Rook piece'''
+    prefix = 'R'
+
+    def __init__(self, position):
+        self.position = position
+
+
+    def is_legal_move(self, position):
+        '''Makes Rook moves straight
+        Checking to see if the x or y coordinates are the same
+        Args: position'''
+
+        oldposition = self.algebraic_to_numeric(self.position)
+        newposition = self.algebraic_to_numeric(position)
+
+        if oldposition[0] == newposition[0] or oldposition[1] == newposition[1]:
+            return True
+        else:
+            return False
+
+
+class Bishop(ChessPiece):
+    '''Makes a Bishop'''
+    prefix = 'B'
+    def __init__(self, position):
+        self.position = position
+    def is_legal_move(self, position):
+        '''Makes Bishop move diagonally
+        Checking to see if the x or y coordinates are the same
+        Args: position'''
+        oldposition = self.algebraic_to_numeric(self.position)
+        newposition = self.algebraic_to_numeric(position)
+
+        if oldposition[0] - newposition[0] == oldposition[1] - newposition[1]:
+            return True
+        elif oldposition[0] - newposition[0] == -(oldposition[1] - newposition[1]):
+            return True
+        else:
+            return False
+
+
+class King(ChessPiece):
+    '''Makes a King, subclass to ChessPiece'''
+    prefix = 'K'
+    def __init__(self, position):
+        self.position = position
+
+    def is_legal_move(self, position):
+        '''King can move in any direction but only 1 tile at a time'''
+        oldposition = self.algebraic_to_numeric(self.position)
+        newposition = self.algebraic_to_numeric(position)
+        if (oldposition[0] - newposition[0]) != 1 or -1:
+            return False
+        elif (oldposition[1] - newposition[1]) != 1 or -1:
+            return False
+        else:
+            return True
+
+
+class ChessMatch(object):
+    """The pieces on a chess board.
+
+    Args:
+        pieces (None): defaults that there are no pieces on the board
+
+    Attributes:
+        pieces (None):
+    """
+
+    def __init__(self, pieces=None):
+        if pieces == None:
+            self.reset()
+        else:
+            self.pieces = pieces
+            self.log = []
+
+    def reset(self):
+        self.log = []
+        self.pieces = {
+            'Ra1': Rook('a1'),
+            'Rh1': Rook('h1'),
+            'Ra8': Rook('a8'),
+            'Rh8': Rook('h8'),
+            'Bc1': Bishop('c1'),
+            'Bf1': Bishop('f1'),
+            'Bc8': Bishop('c8'),
+            'Bf8': Bishop('f8'),
+            'Ke1': King('e1'),
+            'Ke8': King('e8'),
+        }
+
+    def move(self, fullnot, dest):
+        a_tup = self.pieces[fullnot].move(dest)
+        if a_tup is False:
+            return False
+        else:
+            self.log.append(a_tup)
+            new_key = self.pieces[fullnot].prefix + dest
+            self.pieces[new_fullnot] = self.pieces.pop(fullnot)
+            return a_tup
+    
+    def __len__(self):
+        return len(self.log)
